@@ -71,7 +71,7 @@ func statsd(c *StatsDConfig) error {
 
 		switch m := metric.(type) {
 		case metrics.Counter:
-			fmt.Fprintf(w, "%s.count:%d|c\n", name, m.Count())
+			fmt.Fprintf(w, "%s.count:%d|g\n", name, m.Count())
 		case metrics.Gauge:
 			fmt.Fprintf(w, "%s.value:%d|g\n", name, m.Value())
 		case metrics.GaugeFloat64:
@@ -79,7 +79,7 @@ func statsd(c *StatsDConfig) error {
 		case metrics.Histogram:
 			h := m.Snapshot()
 			ps := h.Percentiles(c.Percentiles)
-			fmt.Fprintf(w, "%s.count:%d|c\n", name, h.Count())
+			fmt.Fprintf(w, "%s.count:%d|g\n", name, h.Count())
 			fmt.Fprintf(w, "%s.min:%d|g\n", name, h.Min())
 			fmt.Fprintf(w, "%s.max:%d|g\n", name, h.Max())
 			fmt.Fprintf(w, "%s.mean:%.2f|g\n", name, h.Mean())
@@ -90,7 +90,7 @@ func statsd(c *StatsDConfig) error {
 			}
 		case metrics.Meter:
 			ss := m.Snapshot()
-			fmt.Fprintf(w, "%s.count:%d|c\n", name, ss.Count())
+			fmt.Fprintf(w, "%s.count:%d|g\n", name, ss.Count())
 			fmt.Fprintf(w, "%s.one-minute:%.2f|g\n", name, ss.Rate1())
 			fmt.Fprintf(w, "%s.five-minute:%.2f|g\n", name, ss.Rate5())
 			fmt.Fprintf(w, "%s.fifteen-minute:%.2f|g\n", name, ss.Rate15())
@@ -98,7 +98,7 @@ func statsd(c *StatsDConfig) error {
 		case metrics.Timer:
 			t := m.Snapshot()
 			ps := t.Percentiles(c.Percentiles)
-			fmt.Fprintf(w, "%s.count:%d|c\n", name, t.Count())
+			fmt.Fprintf(w, "%s.count:%d|g\n", name, t.Count())
 			fmt.Fprintf(w, "%s.min:%d|g\n", name, t.Min()/int64(du))
 			fmt.Fprintf(w, "%s.max:%d|g\n", name, t.Max()/int64(du))
 			fmt.Fprintf(w, "%s.mean:%.2f|g\n", name, t.Mean()/du)

@@ -9,7 +9,7 @@ both the core library and the client easier.
 ### Usage
 
 ```go
-import "github.com/pubnub/go-metrics-statsd"
+import "github.com/kingster/go-metrics-statsd"
 
 
 go statsd.StatsD(metrics.DefaultRegistry,
